@@ -32,8 +32,11 @@ public enum Orientation {
 		throw new IllegalArgumentException("Aucune " + Orientation.class.getSimpleName() + " pour le code " + code);
 	}
 
+	/** Code fonctionnel de l'orientation */
 	private String		code;
+	/** Angle correspondant à la l'orientation */
 	private Integer		angle;
+	/** Vecteur à ajouter lors d'une operation de translation */
 	private Coordonnees	translationUnite1;
 
 	private Orientation(String code, Integer angle, Coordonnees translationUnite1) {
