@@ -30,6 +30,7 @@ public class TondeuseTest {
 		terrain.ajouterTondeuse(tondeuse);
 
 		tondeuse.traiterInstruction(Instruction.AVANCER);
+		// La tondeuse s'est déplacée d'une case vers la droite
 		Assertions.assertThat(tondeuse.getCoordonnees()).isEqualTo(new Coordonnees(6, 2));
 	}
 
@@ -42,6 +43,7 @@ public class TondeuseTest {
 		terrain.ajouterTondeuse(tondeuse);
 
 		tondeuse.traiterInstruction(Instruction.AVANCER);
+		// La tondeuse ne s'est pas déplacée
 		Assertions.assertThat(tondeuse.getCoordonnees()).isEqualTo(new Coordonnees(10, 0));
 	}
 
@@ -54,6 +56,7 @@ public class TondeuseTest {
 		terrain.ajouterTondeuse(tondeuse);
 
 		tondeuse.traiterInstruction(Instruction.AVANCER);
+		// La tondeuse s'est déplacée vers le haut
 		Assertions.assertThat(tondeuse.getCoordonnees()).isEqualTo(new Coordonnees(5, 3));
 	}
 
@@ -66,6 +69,7 @@ public class TondeuseTest {
 		terrain.ajouterTondeuse(tondeuse);
 
 		tondeuse.traiterInstruction(Instruction.AVANCER);
+		// La tondeuse s'est déplacée d'une case vers la gauche
 		Assertions.assertThat(tondeuse.getCoordonnees()).isEqualTo(new Coordonnees(4, 2));
 	}
 
@@ -78,24 +82,18 @@ public class TondeuseTest {
 		terrain.ajouterTondeuse(tondeuse);
 
 		tondeuse.traiterInstruction(Instruction.AVANCER);
+		// La tondeuse s'est déplacée d'une case vers le bas
 		Assertions.assertThat(tondeuse.getCoordonnees()).isEqualTo(new Coordonnees(5, 1));
 	}
 
-	@Test
-	public void testProgrammerTondeuse() {
-		Tondeuse t = new Tondeuse("t1", new Coordonnees(0, 0), Orientation.NORD);
-
-		t.programmer(instructions1);
-
-	}
-
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void testTondreSansTerrain() {
 		Tondeuse tondeuse = new Tondeuse("t1", new Coordonnees(5, 2), Orientation.EST);
 
 		tondeuse.programmer(instructions1);
 		tondeuse.tondre();
-		Assertions.assertThat(tondeuse.getCoordonnees()).isEqualTo(new Coordonnees(6, 2));
+
+		// une exeption doit être levée car il est impossible de tondre si la tondeuse n'est pas sur un terrain
 	}
 
 	@Test

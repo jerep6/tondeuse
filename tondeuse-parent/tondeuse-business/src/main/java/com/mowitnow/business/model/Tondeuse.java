@@ -75,7 +75,7 @@ public class Tondeuse {
 	 * @param t
 	 *            terrain sur lequel positionner la tondeuse
 	 */
-	protected void positionnerSurTerrain(Terrain t) {
+	void positionnerSurTerrain(Terrain t) {
 		terrain = t;
 	}
 
