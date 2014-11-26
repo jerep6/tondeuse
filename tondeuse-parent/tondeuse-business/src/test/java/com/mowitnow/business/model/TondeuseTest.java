@@ -1,18 +1,25 @@
-package com.mowitnow;
+package com.mowitnow.business.model;
+
+import java.util.Arrays;
+import java.util.List;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mowitnow.business.model.Coordonnees;
-import com.mowitnow.business.model.Instruction;
-import com.mowitnow.business.model.Orientation;
-import com.mowitnow.business.model.Terrain;
-import com.mowitnow.business.model.Tondeuse;
-
+/**
+ * Les test sont placés dans le même package que l'objet testé car ils appellent une méthode protected
+ *
+ * @author jerep6
+ *
+ */
 public class TondeuseTest {
-	private static Logger	LOGGER	= LoggerFactory.getLogger(TondeuseTest.class);
+	private static Logger				LOGGER			= LoggerFactory.getLogger(TondeuseTest.class);
+
+	private static List<Instruction>	instructions1	= Arrays.asList(Instruction.AVANCER, null,//
+																Instruction.PIVOTER_DROITE, Instruction.AVANCER, //
+																Instruction.PIVOTER_GAUCHE, Instruction.AVANCER);
 
 	@Test
 	public void testAvancerEstDansTerrain() {
@@ -72,6 +79,23 @@ public class TondeuseTest {
 
 		tondeuse.traiterInstruction(Instruction.AVANCER);
 		Assertions.assertThat(tondeuse.getCoordonnees()).isEqualTo(new Coordonnees(5, 1));
+	}
+
+	@Test
+	public void testProgrammerTondeuse() {
+		Tondeuse t = new Tondeuse("t1", new Coordonnees(0, 0), Orientation.NORD);
+
+		t.programmer(instructions1);
+
+	}
+
+	@Test
+	public void testTondreSansTerrain() {
+		Tondeuse tondeuse = new Tondeuse("t1", new Coordonnees(5, 2), Orientation.EST);
+
+		tondeuse.programmer(instructions1);
+		tondeuse.tondre();
+		Assertions.assertThat(tondeuse.getCoordonnees()).isEqualTo(new Coordonnees(6, 2));
 	}
 
 	@Test
