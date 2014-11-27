@@ -34,7 +34,7 @@ public enum Orientation {
 
 	/** Code fonctionnel de l'orientation */
 	private String		code;
-	/** Angle correspondant à la l'orientation */
+	/** Angle correspondant à l'orientation */
 	private Integer		angle;
 	/** Vecteur à ajouter lors d'une operation de translation */
 	private Coordonnees	translationUnite1;

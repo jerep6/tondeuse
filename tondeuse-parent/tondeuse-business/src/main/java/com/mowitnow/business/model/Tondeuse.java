@@ -1,6 +1,7 @@
 package com.mowitnow.business.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,6 +10,9 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Preconditions;
 import com.mowitnow.business.commande.Commande;
+import com.mowitnow.business.event.EvenementDebutTonte;
+import com.mowitnow.business.event.EvenementFinTonte;
+import com.mowitnow.business.event.EventBusWrapper;
 
 /**
  * Toute action de déplacement de la tondeuse nécessite sont positionnement sur un terrain
@@ -142,9 +146,12 @@ public class Tondeuse implements Deplacable {
 	 */
 	public void tondre() {
 		checkTerrain();
+
+		EventBusWrapper.post(new EvenementDebutTonte(this, new Date()));
 		for (Commande uneCommande : commandes) {
 			uneCommande.executer(this);
 		}
+		EventBusWrapper.post(new EvenementFinTonte(this, new Date()));
 	}
 
 	@Override
