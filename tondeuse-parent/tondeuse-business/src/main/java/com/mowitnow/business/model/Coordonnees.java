@@ -14,7 +14,7 @@ public class Coordonnees {
 
 	/**
 	 * Ajoute les coordonnées en paramètre.
-	 * 
+	 *
 	 * @param coordonneesToAdd
 	 *            coordonnées à ajouter
 	 * @return nouvel objet coordonnées représentant la somme des coordonnées actuel et de ceux passés en paramètre
@@ -54,6 +54,11 @@ public class Coordonnees {
 		result = prime * result + (x == null ? 0 : x.hashCode());
 		result = prime * result + (y == null ? 0 : y.hashCode());
 		return result;
+	}
+
+	public Coordonnees substract(Coordonnees coordonneesToAdd) {
+		Preconditions.checkNotNull(coordonneesToAdd);
+		return new Coordonnees(x - coordonneesToAdd.getX(), y - coordonneesToAdd.getY());
 	}
 
 	@Override

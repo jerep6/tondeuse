@@ -1,4 +1,4 @@
-package com.mowitnow.business.model;
+package com.mowitnow.test;
 
 import java.util.Arrays;
 import java.util.List;
@@ -8,18 +8,21 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Les test sont placés dans le même package que l'objet testé car ils appellent une méthode protected
- *
- * @author jerep6
- *
- */
-public class TondeuseTest {
-	private static Logger				LOGGER			= LoggerFactory.getLogger(TondeuseTest.class);
+import com.mowitnow.business.commande.Commande;
+import com.mowitnow.business.commande.CommandeAvancer;
+import com.mowitnow.business.commande.CommandeTournerDroite;
+import com.mowitnow.business.commande.CommandeTournerGauche;
+import com.mowitnow.business.model.Coordonnees;
+import com.mowitnow.business.model.Orientation;
+import com.mowitnow.business.model.Terrain;
+import com.mowitnow.business.model.Tondeuse;
 
-	private static List<Instruction>	instructions1	= Arrays.asList(Instruction.AVANCER, null,//
-																Instruction.PIVOTER_DROITE, Instruction.AVANCER, //
-																Instruction.PIVOTER_GAUCHE, Instruction.AVANCER);
+public class TondeuseTest {
+	private static Logger			LOGGER			= LoggerFactory.getLogger(TondeuseTest.class);
+
+	private static List<Commande>	instructions1	= Arrays.asList(new CommandeAvancer(), null,//
+			new CommandeTournerDroite(), new CommandeAvancer(), //
+			new CommandeTournerGauche(), new CommandeAvancer());
 
 	@Test
 	public void testAvancerEstDansTerrain() {
@@ -29,7 +32,7 @@ public class TondeuseTest {
 		Terrain terrain = new Terrain(new Coordonnees(10, 5));
 		terrain.ajouterTondeuse(tondeuse);
 
-		tondeuse.traiterInstruction(Instruction.AVANCER);
+		tondeuse.avancer();
 		// La tondeuse s'est déplacée d'une case vers la droite
 		Assertions.assertThat(tondeuse.getCoordonnees()).isEqualTo(new Coordonnees(6, 2));
 	}
@@ -42,7 +45,7 @@ public class TondeuseTest {
 		Terrain terrain = new Terrain(new Coordonnees(10, 5));
 		terrain.ajouterTondeuse(tondeuse);
 
-		tondeuse.traiterInstruction(Instruction.AVANCER);
+		tondeuse.avancer();
 		// La tondeuse ne s'est pas déplacée
 		Assertions.assertThat(tondeuse.getCoordonnees()).isEqualTo(new Coordonnees(10, 0));
 	}
@@ -55,7 +58,7 @@ public class TondeuseTest {
 		Terrain terrain = new Terrain(new Coordonnees(10, 5));
 		terrain.ajouterTondeuse(tondeuse);
 
-		tondeuse.traiterInstruction(Instruction.AVANCER);
+		tondeuse.avancer();
 		// La tondeuse s'est déplacée vers le haut
 		Assertions.assertThat(tondeuse.getCoordonnees()).isEqualTo(new Coordonnees(5, 3));
 	}
@@ -68,7 +71,7 @@ public class TondeuseTest {
 		Terrain terrain = new Terrain(new Coordonnees(10, 5));
 		terrain.ajouterTondeuse(tondeuse);
 
-		tondeuse.traiterInstruction(Instruction.AVANCER);
+		tondeuse.avancer();
 		// La tondeuse s'est déplacée d'une case vers la gauche
 		Assertions.assertThat(tondeuse.getCoordonnees()).isEqualTo(new Coordonnees(4, 2));
 	}
@@ -81,7 +84,7 @@ public class TondeuseTest {
 		Terrain terrain = new Terrain(new Coordonnees(10, 5));
 		terrain.ajouterTondeuse(tondeuse);
 
-		tondeuse.traiterInstruction(Instruction.AVANCER);
+		tondeuse.avancer();
 		// La tondeuse s'est déplacée d'une case vers le bas
 		Assertions.assertThat(tondeuse.getCoordonnees()).isEqualTo(new Coordonnees(5, 1));
 	}
@@ -99,30 +102,35 @@ public class TondeuseTest {
 	@Test
 	public void testTournerDroite() {
 		Tondeuse t = new Tondeuse("t1", new Coordonnees(0, 0), Orientation.NORD);
+		Terrain terrain = new Terrain(new Coordonnees(10, 5));
+		terrain.ajouterTondeuse(t);
+
 		Assertions.assertThat(t.getOrientation()).isEqualTo(Orientation.NORD);
 
-		t.traiterInstruction(Instruction.PIVOTER_DROITE);
+		t.tournerDroite();
 		Assertions.assertThat(t.getOrientation()).isEqualTo(Orientation.EST);
 
-		t.traiterInstruction(Instruction.PIVOTER_DROITE);
+		t.tournerDroite();
 		Assertions.assertThat(t.getOrientation()).isEqualTo(Orientation.SUD);
 
-		t.traiterInstruction(Instruction.PIVOTER_DROITE);
+		t.tournerDroite();
 		Assertions.assertThat(t.getOrientation()).isEqualTo(Orientation.OUEST);
 	}
 
 	@Test
 	public void testTournerGauche() {
 		Tondeuse t = new Tondeuse("t1", new Coordonnees(0, 0), Orientation.NORD);
+		Terrain terrain = new Terrain(new Coordonnees(10, 5));
+		terrain.ajouterTondeuse(t);
 		Assertions.assertThat(t.getOrientation()).isEqualTo(Orientation.NORD);
 
-		t.traiterInstruction(Instruction.PIVOTER_GAUCHE);
+		t.tournerGauche();
 		Assertions.assertThat(t.getOrientation()).isEqualTo(Orientation.OUEST);
 
-		t.traiterInstruction(Instruction.PIVOTER_GAUCHE);
+		t.tournerGauche();
 		Assertions.assertThat(t.getOrientation()).isEqualTo(Orientation.SUD);
 
-		t.traiterInstruction(Instruction.PIVOTER_GAUCHE);
+		t.tournerGauche();
 		Assertions.assertThat(t.getOrientation()).isEqualTo(Orientation.EST);
 
 	}

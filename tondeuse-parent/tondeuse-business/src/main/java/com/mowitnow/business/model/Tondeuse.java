@@ -8,22 +8,28 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Preconditions;
+import com.mowitnow.business.commande.Commande;
 
-public class Tondeuse {
-	private static Logger		LOGGER			= LoggerFactory.getLogger(Tondeuse.class);
+/**
+ * Toute action de déplacement de la tondeuse nécessite sont positionnement sur un terrain
+ *
+ * @author jpinsolle
+ *
+ */
+public class Tondeuse implements Deplacable {
+	private static Logger	LOGGER		= LoggerFactory.getLogger(Tondeuse.class);
 
 	/** Identifiant fonctionnel d'une tondeuse */
-	private String				numero;
+	private String			numero;
 
-	private Coordonnees			coordonnees;
-	private Orientation			orientation;
-	private Terrain				terrain;
+	private Coordonnees		coordonnees;
+	private Orientation		orientation;
+	private Terrain			terrain;
 
-	private List<Instruction>	instructions	= new ArrayList<>();
+	/** Liste des commandes qu doit effectuer la tondeuse lors de la tonte */
+	private List<Commande>	commandes	= new ArrayList<>();
 
-	/**
-	 * Construit une tondeuse située aux coordonnées (0,0) et orientée vers le nord
-	 */
+	/** Construit une tondeuse située aux coordonnées (0,0) et orientée vers le nord */
 	public Tondeuse(String numero) {
 		this(numero, new Coordonnees(0, 0), Orientation.NORD);
 	}
@@ -35,9 +41,29 @@ public class Tondeuse {
 		this.orientation = orientation;
 	}
 
+	@Override
+	public void avancer() {
+		checkTerrain();
+		Coordonnees nouvelleCoord = coordonnees.add(orientation.getTranslationUnite1());
+
+		// Si la nouvelle position de la tondeuse est dans le terrain => déplacement
+		if (terrain.estDedans(nouvelleCoord)) {
+			coordonnees = nouvelleCoord;
+		} else { // Tondeuse hors du terrain = log
+			LOGGER.info("La tondeuse {} ne peut pas avancer car elle est à la limite du terrain", numero);
+		}
+	}
+
+	/** Vérifie que la tondeuse est bien positionné sur un terrain. */
+	private void checkTerrain() {
+		Preconditions.checkArgument(terrain != null,
+				"La tondeuse doit être positionnée sur un terrain avant d'effectuer des actions");
+
+	}
+
 	/** Supprime toute les instructions de la tondeuse. */
 	public void deprogrammer() {
-		instructions.clear();
+		commandes.clear();
 	}
 
 	@Override
@@ -86,12 +112,24 @@ public class Tondeuse {
 	 * @param instructions
 	 *            liste des instructions de la tondeuse. La liste ne doit pas être nulle
 	 */
-	public void programmer(List<Instruction> instructions) {
+	public void programmer(List<Commande> instructions) {
 		Preconditions.checkNotNull(instructions);
 		deprogrammer();
 
 		// Supprime toutes les instructions nulles
-		this.instructions.addAll(instructions.stream().filter(i -> i != null).collect(Collectors.toList()));
+		this.commandes.addAll(instructions.stream().filter(i -> i != null).collect(Collectors.toList()));
+	}
+
+	@Override
+	public void reculer() {
+		Coordonnees nouvelleCoord = coordonnees.substract(orientation.getTranslationUnite1());
+
+		// Si la nouvelle position de la tondeuse est dans le terrain => déplacement
+		if (terrain.estDedans(nouvelleCoord)) {
+			coordonnees = nouvelleCoord;
+		} else { // Tondeuse hors du terrain = log
+			LOGGER.info("La tondeuse {} ne peut pas reculer car elle est à la limite du terrain", numero);
+		}
 	}
 
 	/**
@@ -103,38 +141,22 @@ public class Tondeuse {
 	 * méthode
 	 */
 	public void tondre() {
-		Preconditions
-		.checkArgument(terrain != null, "La tondeuse doit être positionnée sur un terrain avant de tondre");
-
-		for (Instruction uneInstruction : instructions) {
-			traiterInstruction(uneInstruction);
+		checkTerrain();
+		for (Commande uneCommande : commandes) {
+			uneCommande.executer(this);
 		}
 	}
 
-	protected void traiterInstruction(Instruction i) {
+	@Override
+	public void tournerDroite() {
+		checkTerrain();
+		orientation = orientation.tourner(90);
+	}
 
-		switch (i) {
-			case PIVOTER_DROITE:
-				orientation = orientation.tourner(90);
-				break;
-			case PIVOTER_GAUCHE:
-				orientation = orientation.tourner(-90);
-				break;
-			case AVANCER:
-				Coordonnees nouvelleCoord = coordonnees.add(orientation.getTranslationUnite1());
-
-				// Si la nouvelle position de la tondeuse est dans le terrain => déplacement
-				if (terrain.estDedans(nouvelleCoord)) {
-					coordonnees = nouvelleCoord;
-				} else { // Tondeuse hors du terrain = log
-					LOGGER.info("La tondeuse {} ne peut pas avancer car elle est à la limite du terrain", numero);
-				}
-				break;
-
-			default:
-				break;
-		}
-
+	@Override
+	public void tournerGauche() {
+		checkTerrain();
+		orientation = orientation.tourner(-90);
 	}
 
 }

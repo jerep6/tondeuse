@@ -1,9 +1,13 @@
-package com.mowitnow.business.model;
+package com.mowitnow.test;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.mowitnow.business.model.Coordonnees;
+import com.mowitnow.business.model.Terrain;
+import com.mowitnow.business.model.Tondeuse;
 
 public class TerrainTest {
 	private static Logger	LOGGER	= LoggerFactory.getLogger(TerrainTest.class);
