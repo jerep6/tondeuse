@@ -1,6 +1,7 @@
 package com.mowitnow.business.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -80,6 +81,10 @@ public class Tondeuse implements Deplacable {
 			if (other.numero != null) return false;
 		} else if (!numero.equals(other.numero)) return false;
 		return true;
+	}
+
+	public List<Commande> getCommandes() {
+		return Collections.unmodifiableList(commandes);
 	}
 
 	public Coordonnees getCoordonnees() {
