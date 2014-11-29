@@ -24,7 +24,7 @@ public class SimpleFileParserTest {
 
 	private void assertTondeuse(Set<Tondeuse> tondeuses, Coordonnees coordonnees, Orientation orientation,
 			List<Class> commandes) {
-		// récupère la tondeuse 1 à partir de ses coordonnées.
+		// récupère la tondeuse à partir de ses coordonnées.
 		Optional<Tondeuse> optT1 = tondeuses.stream().filter(t -> coordonnees.equals(t.getCoordonnees())).findFirst();
 		Tondeuse t1 = optT1.orElse(null);
 		Assertions.assertThat(t1).isNotNull(); // La tondeuse doit exister
@@ -35,7 +35,7 @@ public class SimpleFileParserTest {
 			Class cl = c.getClass();
 			return cl;
 		}).collect(Collectors.toList()))//
-				.containsExactlyElementsOf(commandes);
+		.containsExactlyElementsOf(commandes);
 	}
 
 	@Test(expected = FileNotFoundException.class)

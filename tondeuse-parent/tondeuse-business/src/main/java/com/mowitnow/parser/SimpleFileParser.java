@@ -10,10 +10,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Preconditions;
 import com.mowitnow.business.commande.Commande;
 import com.mowitnow.business.model.Coordonnees;
 import com.mowitnow.business.model.Orientation;
@@ -35,6 +37,9 @@ public class SimpleFileParser implements Parser {
 
 	public SimpleFileParser(Path cheminFichier) throws IOException {
 		super();
+		LOGGER.debug("Création d'un SimpleFileParser avec le fichier {}", cheminFichier.toAbsolutePath());
+
+		Preconditions.checkNotNull(cheminFichier);
 		if (!Files.exists(cheminFichier)) {
 			throw new FileNotFoundException();
 		}
@@ -66,13 +71,15 @@ public class SimpleFileParser implements Parser {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see com.mowitnow.parser.Parser#getTerrain()
 	 */
 	@Override
 	public Terrain getTerrain() {
 		// Le terrain correspond à la première ligne
-		String[] split = lignes.get(0).split(" ");
+		String l = lignes.get(0);
+		LOGGER.debug("Traitement du terrain {}", l);
+		String[] split = l.split(" ");
 
 		Terrain t = new Terrain(new Coordonnees(Integer.valueOf(split[0]), Integer.valueOf(split[1])));
 		return t;
@@ -96,11 +103,14 @@ public class SimpleFileParser implements Parser {
 			// Initialisation des instructions
 			String ligne2 = lignes.get(i + 1);
 			LOGGER.debug("Traitement des instructions de la tondeuse {}", ligne2);
-			List<Commande> cmd = ligne2.chars().mapToObj(c -> (char) c).map(CharacterToCommande::charToCommande)
-					.collect(Collectors.toList());
+			List<Commande> cmd = ligne2.chars()//
+					.mapToObj(c -> (char) c)// conversion des int en char
+					.map(CharacterToCommande::charToCommande)// extraction des classes des commandes
+					.flatMap(o -> o.isPresent() ? Stream.of(o.get()) : Stream.empty())// suppression des optionals
+					.collect(Collectors.toList());// conversion en liste
+			LOGGER.debug("Liste des commandes {}", cmd);
 
 			tondeuseCourante.programmer(cmd);
-
 			tondeuses.add(tondeuseCourante);
 		}
 		return tondeuses;

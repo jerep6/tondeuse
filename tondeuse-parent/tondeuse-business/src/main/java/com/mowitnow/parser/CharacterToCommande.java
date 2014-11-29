@@ -1,5 +1,7 @@
 package com.mowitnow.parser;
 
+import java.util.Optional;
+
 import com.mowitnow.business.commande.Commande;
 import com.mowitnow.business.commande.CommandeAvancer;
 import com.mowitnow.business.commande.CommandeTournerDroite;
@@ -9,13 +11,12 @@ public class CharacterToCommande {
 
 	/**
 	 * Converti un char en commande.
-	 * 
+	 *
 	 * @param c
 	 *            caractère représentant le nom de l'instruction
 	 * @return
 	 */
-	public static Commande charToCommande(char c) {
-		System.out.println(c);
+	public static Optional<Commande> charToCommande(char c) {
 		Commande com = null;
 		switch (c) {
 			case 'D':
@@ -32,7 +33,7 @@ public class CharacterToCommande {
 				break;
 		}
 
-		return com;
+		return Optional.ofNullable(com);
 	}
 
 }
