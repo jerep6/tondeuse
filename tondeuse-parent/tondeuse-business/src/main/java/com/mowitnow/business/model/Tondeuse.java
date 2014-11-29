@@ -91,6 +91,10 @@ public class Tondeuse implements Deplacable {
 		return coordonnees;
 	}
 
+	public String getNumero() {
+		return numero;
+	}
+
 	public Orientation getOrientation() {
 		return orientation;
 	}
@@ -157,6 +161,11 @@ public class Tondeuse implements Deplacable {
 			uneCommande.executer(this);
 		}
 		EventBusWrapper.post(new EvenementFinTonte(this, new Date()));
+	}
+
+	@Override
+	public String toString() {
+		return "Tondeuse [numero=" + numero + ", coordonnees=" + coordonnees + ", orientation=" + orientation + "]";
 	}
 
 	@Override

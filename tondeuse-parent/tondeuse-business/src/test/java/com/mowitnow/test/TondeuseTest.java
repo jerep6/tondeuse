@@ -24,10 +24,10 @@ public class TondeuseTest {
 	private static Logger			LOGGER			= LoggerFactory.getLogger(TondeuseTest.class);
 
 	private static List<Commande>	instructions1	= Arrays.asList(new CommandeAvancer(), null,//
-															new CommandeTournerDroite(), new CommandeAvancer(), //
-															new CommandeTournerGauche(), new CommandeAvancer());
+			new CommandeTournerDroite(), new CommandeAvancer(), //
+			new CommandeTournerGauche(), new CommandeAvancer());
 
-	/** Tondeuse recu par l'évenement de fin de tonte. Compte sur le fait que le bus d'évement et synchrone */
+	/** Tondeuse recu par l'évenement de fin de tonte. Compte sur le fait que le bus d'évements soit synchrone */
 	private Tondeuse				tondeuseEvenement;
 
 	@Subscribe

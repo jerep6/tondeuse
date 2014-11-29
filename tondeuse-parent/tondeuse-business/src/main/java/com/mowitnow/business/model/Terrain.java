@@ -1,8 +1,11 @@
 package com.mowitnow.business.model;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import com.google.common.base.Preconditions;
 
 /**
  * Le terrain est un rectangle.
@@ -62,12 +65,24 @@ public class Terrain {
 	 *            tondeuse à ajouter au terrain
 	 * @return
 	 */
-	public Terrain ajouterTondeuse(Tondeuse tondeuse) {
+	public void ajouterTondeuse(Tondeuse tondeuse) {
 		tondeuses.add(tondeuse);
 
 		// Renseigne également le terrain dans la tondeuse
 		tondeuse.positionnerSurTerrain(this);
-		return this;
+	}
+
+	/**
+	 * Ajoute une collection de tondeuses au terrain
+	 * 
+	 * @param collection
+	 */
+	public void ajouterTondeuses(Collection<Tondeuse> collection) {
+		Preconditions.checkNotNull(collection);
+
+		for (Tondeuse uneTondeuse : collection) {
+			ajouterTondeuse(uneTondeuse);
+		}
 	}
 
 	/**

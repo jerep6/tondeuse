@@ -25,6 +25,7 @@
 
 	<modules>
 		<module>tondeuse-business</module>
+		<module>tondeuse-cli</module>
 	</modules>
 
 	<dependencyManagement>
