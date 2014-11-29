@@ -14,17 +14,25 @@ public class TerrainTest {
 
 	@Test
 	public void testCoordonneesDansTerrain() {
-		Terrain t = new Terrain(new Coordonnees(10, 5));
+		Terrain t = new Terrain(new Coordonnees(2, 3), new Coordonnees(10, 5));
 
 		Boolean estDedans = t.estDedans(new Coordonnees(9, 5));
 		Assertions.assertThat(estDedans).isTrue();
 	}
 
 	@Test
-	public void testCoordonneesHorsDuTerrain() {
-		Terrain t = new Terrain(new Coordonnees(10, 5));
+	public void testCoordonneesHorsDuTerrain1() {
+		Terrain t = new Terrain(new Coordonnees(2, 3), new Coordonnees(10, 5));
 
 		Boolean estDedans = t.estDedans(new Coordonnees(15, 5));
+		Assertions.assertThat(estDedans).isFalse();
+	}
+
+	@Test
+	public void testCoordonneesHorsDuTerrain2() {
+		Terrain t = new Terrain(new Coordonnees(2, 3), new Coordonnees(10, 5));
+
+		Boolean estDedans = t.estDedans(new Coordonnees(1, 1));
 		Assertions.assertThat(estDedans).isFalse();
 	}
 
@@ -49,7 +57,7 @@ public class TerrainTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testTerrainInvalide() {
-		new Terrain(new Coordonnees(0, 0));
+		new Terrain(new Coordonnees(5, 3), new Coordonnees(10, 3));
 
 		// Une exception doit être levée car les coordonnées passées en paramètre ne permettent pas de former un
 		// rectangle

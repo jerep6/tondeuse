@@ -10,7 +10,7 @@ import com.mowitnow.business.commande.CommandeTournerGauche;
 public class CharacterToCommande {
 
 	/**
-	 * Converti un char en commande.
+	 * Convertit un char en commande.
 	 *
 	 * @param c
 	 *            caractère représentant le nom de l'instruction

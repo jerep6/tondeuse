@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Le terrain est un rectangle dont les coordonnées du coin en bas à gauche sont (0,0).
+ * Le terrain est un rectangle.
  *
  * Un terrain se voit assigner des tondeuses
  *
@@ -15,25 +15,43 @@ import java.util.Set;
 public class Terrain {
 
 	/** Coordonnées du coin en haut à droite. Le terrain est donc un rectangle */
+	private Coordonnees		coordonneesBasGauche;
+
+	/** Coordonnées du coin en haut à droite. Le terrain est donc un rectangle */
 	private Coordonnees		coordonneesHautDroit;
 
 	/** Tondeuses présentent sur le terrain */
 	private Set<Tondeuse>	tondeuses	= new HashSet<>();
 
 	/**
+	 *
 	 * Construit un terrain à partir de ses coordonnées haut/droit. Suppose que les coordonnées bas/gauche sont (0.0).
 	 *
+	 * @param coordonneesHautDroit
+	 */
+	public Terrain(Coordonnees coordonneesHautDroit) {
+		this(new Coordonnees(0, 0), coordonneesHautDroit);
+	}
+
+	/**
+	 * Construit un terrain à partir de ses coordonnées
+	 *
+	 * @param coordonneesBasGauche
 	 * @param coordonneesHautDroit
 	 * @throws IllegalArgumentException
 	 *             si les coordonnées ne sont pas valide. C'est à dire qu'elles ne permettent pas de former un rectangle
 	 *             dont les coordonnées sont positives
 	 */
-	public Terrain(Coordonnees coordonneesHautDroit) {
+	public Terrain(Coordonnees coordonneesBasGauche, Coordonnees coordonneesHautDroit) {
 		super();
 		// Vérifie que les coordonnées sont valides pour construire le terrain
-		if (coordonneesHautDroit == null || coordonneesHautDroit.getX() <= 0 || coordonneesHautDroit.getY() <= 0) {
+		if (coordonneesBasGauche == null //
+				|| coordonneesHautDroit == null //
+				|| coordonneesHautDroit.getX() <= coordonneesBasGauche.getX()
+				|| coordonneesHautDroit.getY() <= coordonneesBasGauche.getY()) {
 			throw new IllegalArgumentException("Les coordonnées fournies sont incorrectes");
 		}
+		this.coordonneesBasGauche = coordonneesBasGauche;
 		this.coordonneesHautDroit = coordonneesHautDroit;
 	}
 
@@ -60,7 +78,8 @@ public class Terrain {
 	 * @return vrai si les coordonnées sont dedans. False sinon
 	 */
 	public Boolean estDedans(Coordonnees c) {
-		return coordonneesHautDroit.getX() >= c.getX() && coordonneesHautDroit.getY() >= c.getY();
+		return coordonneesBasGauche.getX() <= c.getX() && coordonneesBasGauche.getY() <= c.getY()//
+				&& coordonneesHautDroit.getX() >= c.getX() && coordonneesHautDroit.getY() >= c.getY();
 	}
 
 	/**
