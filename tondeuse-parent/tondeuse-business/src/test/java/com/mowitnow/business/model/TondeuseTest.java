@@ -1,4 +1,4 @@
-package com.mowitnow.test;
+package com.mowitnow.business.model;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.mowitnow.parser;
+package com.mowitnow.business.parser;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -19,6 +19,7 @@ import com.mowitnow.business.model.Coordonnees;
 import com.mowitnow.business.model.Orientation;
 import com.mowitnow.business.model.Terrain;
 import com.mowitnow.business.model.Tondeuse;
+import com.mowitnow.parser.SimpleFileParser;
 
 public class SimpleFileParserTest {
 

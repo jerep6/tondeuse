@@ -1,4 +1,4 @@
-package com.mowitnow.test;
+package com.mowitnow.business.model;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
