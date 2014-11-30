@@ -74,7 +74,7 @@ public class Terrain {
 
 	/**
 	 * Ajoute une collection de tondeuses au terrain
-	 * 
+	 *
 	 * @param collection
 	 */
 	public void ajouterTondeuses(Collection<Tondeuse> collection) {
@@ -104,9 +104,15 @@ public class Terrain {
 		return Collections.unmodifiableSet(tondeuses);
 	}
 
+	public void supprimerTondeuse(Tondeuse tondeuse) {
+		Preconditions.checkNotNull(tondeuse);
+		tondeuse.enleverDuTerrain();
+		tondeuses.remove(tondeuse);
+	}
+
 	/**
 	 * Lance la tonte du terrain avec toute les tondeuses présentes sur ce terrain
-	 * Le traitement s'effectue en séquentiel. C'est à dire que chaque tondeuse effectue son parcourt et laisse la main
+	 * Le traitement s'effectue en séquentiel. C'est à dire que chaque tondeuse effectue son parcours et laisse la main
 	 * à la suivante
 	 */
 	public void tondre() {

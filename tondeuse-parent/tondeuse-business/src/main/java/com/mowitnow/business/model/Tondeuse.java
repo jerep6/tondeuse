@@ -14,6 +14,7 @@ import com.mowitnow.business.commande.Commande;
 import com.mowitnow.business.event.EvenementDebutTonte;
 import com.mowitnow.business.event.EvenementFinTonte;
 import com.mowitnow.business.event.EventBusWrapper;
+import com.mowitnow.business.exception.TondeuseDejaSurTerrainException;
 
 /**
  * Toute action de déplacement de la tondeuse nécessite sont positionnement sur un terrain
@@ -71,6 +72,14 @@ public class Tondeuse implements Deplacable {
 		commandes.clear();
 	}
 
+	/**
+	 * Enlève la tondeuse du terrain
+	 * Visibilité package
+	 */
+	void enleverDuTerrain() {
+		terrain = null;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) return true;
@@ -113,8 +122,13 @@ public class Tondeuse implements Deplacable {
 	 *
 	 * @param t
 	 *            terrain sur lequel positionner la tondeuse
+	 * @throws TondeuseDejaSurTerrainException
+	 *             si la tondeuse est déjà sur un terrain différent du terrain passé en paramètre
 	 */
 	void positionnerSurTerrain(Terrain t) {
+		if (terrain != null && !terrain.equals(t)) {
+			throw new TondeuseDejaSurTerrainException();
+		}
 		terrain = t;
 	}
 
